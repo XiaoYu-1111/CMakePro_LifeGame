@@ -1,0 +1,4 @@
+#N LWSS
+#C A lightweight spaceship that travels horizontally.
+x = 5, y = 4, rule = B3/S23
+bo2bo$o$o3bo$4o!

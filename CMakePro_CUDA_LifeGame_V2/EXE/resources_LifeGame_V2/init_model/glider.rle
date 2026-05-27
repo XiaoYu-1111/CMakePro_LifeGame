@@ -1,0 +1,4 @@
+#N Glider
+#C A simple spaceship that travels diagonally.
+x = 3, y = 3, rule = B3/S23
+bob$2bo$3o!

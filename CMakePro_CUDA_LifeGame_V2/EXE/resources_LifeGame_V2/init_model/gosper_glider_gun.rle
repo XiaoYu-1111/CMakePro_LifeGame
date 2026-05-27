@@ -1,0 +1,6 @@
+#N Gosper glider gun
+#O Bill Gosper
+#C The first known glider gun. Found by Bill Gosper in November 1970.
+#C www.conwaylife.com/wiki/Gosper_glider_gun
+x = 36, y = 9, rule = B3/S23
+24bo$22bobo$12b2o6b2o12b2o$11bo3bo4b2o12b2o$2o8bo5bo3b2o$2o8bo3bob2o4bobo$10bo5bo7bo$11bo3bo$12b2o!
