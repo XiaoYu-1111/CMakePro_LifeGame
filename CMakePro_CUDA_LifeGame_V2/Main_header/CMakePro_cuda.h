@@ -1708,6 +1708,30 @@ void RenderLifeGameScreen_GPU(SimState& state, int winW, int winH, GLHandles& gl
             viewOffset.y += (io.MouseDelta.y / (float)winH) * (aspectCorr.y / viewZoom);
         }
     }
+    // --- [2. 鼠标缩放与平移逻辑] ---
+    if (!io.WantCaptureMouse) {
+        // A. 滚轮缩放 (保持不变)
+        if (io.MouseWheel != 0) {
+            float mouseSpeed = 0.1f * viewZoom;
+            viewZoom += io.MouseWheel * mouseSpeed;
+            if (viewZoom < 0.1f) viewZoom = 0.1f;
+            if (viewZoom > 1000.0f) viewZoom = 1000.0f;
+        }
+        // B. 中键平移 (已修正：乘以 aspectCorr，实现 100% 跟手)
+        if (ImGui::IsMouseDragging(ImGuiMouseButton_Middle)) {
+            viewOffset.x -= (io.MouseDelta.x / (float)winW) * (aspectCorr.x / viewZoom);
+            viewOffset.y += (io.MouseDelta.y / (float)winH) * (aspectCorr.y / viewZoom);
+        }
+    }
+
+    // ============================================================================
+    // 【核心新增：R 键全局重置视角】
+    // 只有当用户没有在任何输入框打字（!io.WantCaptureKeyboard）时，按下 R 键才重置
+    // ============================================================================
+    if (!io.WantCaptureKeyboard && ImGui::IsKeyPressed(ImGuiKey_R)) {
+        viewZoom = 1.0f;
+        viewOffset = { 0.0f, 0.0f };
+    }
 
     // --- [3. 鼠标交互涂抹逻辑] ---
     static int brushRadius = 1;
@@ -1934,6 +1958,7 @@ void RenderLifeGameScreen_GPU(SimState& state, int winW, int winH, GLHandles& gl
                     }
 
                     ImGui::TextColored(coreColor, "SYSTEM_CONFIGURATION");
+
                     constexpr int max_area = 20480 * 20480;
                     constexpr int hardware_max_dim = 32768;
 
